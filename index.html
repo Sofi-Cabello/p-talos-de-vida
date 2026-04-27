@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pétalos de vida — Bienestar Emocional</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --bg:#110f08;--bg-alt:#181509;--surface:#1f1c10;--surface-hover:#2a2618;
+  --accent:#FFBE0B;--accent-glow:rgba(255,190,11,.32);--accent-subtle:rgba(255,190,11,.1);
+  --warm:#FF8C42;--warm-glow:rgba(255,140,66,.24);
+  --coral:#E85D50;--coral-glow:rgba(232,93,80,.18);
+  --rose:#F06292;--rose-glow:rgba(240,98,146,.16);
+  --lime:#AEEA00;--lime-glow:rgba(174,234,0,.14);
+  --gold:#FFD166;--gold-glow:rgba(255,209,102,.2);
+  --text:#ffffff;--text-dim:#c8bc98;--text-muted:#8a7e5e;
+  --border:rgba(255,190,11,.15);--danger:#ff4757;
+  --radius:16px;--radius-sm:10px;--radius-lg:24px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;
+  background-image:
+    radial-gradient(ellipse at 15% 25%,rgba(255, 190, 11, 0.329) 0%,transparent 50%),
+    radial-gradient(ellipse at 80% 60%,rgba(255,140,66,.05) 0%,transparent 45%),
+    radial-gradient(ellipse at 50% 90%,rgba(240,98,146,.04) 0%,transparent 40%);
+}
+h1,h2,h3,h4{font-family:'Playfair Display',serif;font-weight:600}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+img{max-width:100%;display:block}
+
+/* ===== PETALOS FLOTANTES ===== */
+.petals-container{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.petal{position:absolute;width:12px;height:12px;border-radius:50% 0 50% 0;opacity:0;animation:petalFall linear infinite}
+.petal:nth-child(1){left:8%;background:rgba(255,190,11,.25);animation-duration:14s;animation-delay:0s;width:10px;height:10px}
+.petal:nth-child(2){left:22%;background:rgba(255,140,66,.2);animation-duration:18s;animation-delay:3s;width:14px;height:14px}
+.petal:nth-child(3){left:40%;background:rgba(240,98,146,.18);animation-duration:16s;animation-delay:6s;width:8px;height:8px}
+.petal:nth-child(4){left:58%;background:rgba(174,234,0,.15);animation-duration:20s;animation-delay:2s;width:11px;height:11px}
+.petal:nth-child(5){left:75%;background:rgba(255,209,102,.22);animation-duration:15s;animation-delay:8s;width:9px;height:9px}
+.petal:nth-child(6){left:90%;background:rgba(255,190,11,.2);animation-duration:17s;animation-delay:4s;width:13px;height:13px}
+.petal:nth-child(7){left:15%;background:rgba(232,93,80,.16);animation-duration:19s;animation-delay:10s;width:10px;height:10px}
+.petal:nth-child(8){left:65%;background:rgba(255,140,66,.18);animation-duration:13s;animation-delay:7s;width:12px;height:12px}
+@keyframes petalFall{
+  0%{transform:translateY(-5vh) rotate(0deg) scale(.8);opacity:0}
+  10%{opacity:1}90%{opacity:.6}
+  100%{transform:translateY(105vh) rotate(360deg) scale(.4);opacity:0}
+}
+
+/* ===== PRELOADER ===== */
+#preloader{
+  position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;z-index:10000;
+  transition:opacity .7s ease,visibility .7s ease;
+}
+#preloader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.preloader-icon{font-size:2.4rem;color:var(--accent);animation:pulse 1.4s ease-in-out infinite;filter:drop-shadow(0 0 12px rgba(255,190,11,.4))}
+.preloader-text{color:var(--text);font-family:'Playfair Display',serif;font-size:1.4rem;margin-top:10px;opacity:0;animation:fadeUp .6s ease .3s forwards}
+.preloader-bar{width:120px;height:2px;background:var(--surface);border-radius:2px;margin-top:18px;overflow:hidden}
+.preloader-bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--warm),var(--coral),var(--lime));border-radius:2px;animation:loadBar 1.6s ease .4s forwards}
+
+/* ===== NAV ===== */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 40px;display:flex;align-items:center;justify-content:space-between;transition:background .4s,box-shadow .4s,padding .3s}
+nav.scrolled{background:rgba(17,15,8,.94);backdrop-filter:blur(16px);box-shadow:0 1px 0 var(--border);padding:14px 40px}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.5rem;display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--accent),var(--warm));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-logo i{color:var(--accent);font-size:1.2rem;filter:drop-shadow(0 0 6px rgba(255,190,11,.4));animation:iconBounce 3s ease-in-out infinite}
+@keyframes iconBounce{0%,100%{transform:rotate(0deg)}25%{transform:rotate(8deg)}75%{transform:rotate(-8deg)}}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{font-size:.92rem;color:var(--text-dim);position:relative;transition:color .3s;font-weight:500}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--warm));border-radius:2px;transition:width .3s}
+.nav-links a:hover{color:var(--text)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{background:linear-gradient(135deg,var(--accent),var(--warm));color:#1a1200;padding:10px 22px;border-radius:var(--radius-sm);font-weight:600;font-size:.88rem;border:none;cursor:pointer;transition:transform .3s,box-shadow .3s;position:relative;overflow:hidden}
+.nav-cta::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transition:left .5s}
+.nav-cta:hover::before{left:100%}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 6px 24px var(--accent-glow)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:24px;height:2px;background:var(--text);border-radius:2px;transition:all .3s}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.mobile-menu{position:fixed;inset:0;background:rgba(17,15,8,.97);backdrop-filter:blur(20px);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
+.mobile-menu.open{opacity:1;visibility:visible}
+.mobile-menu a{font-size:1.3rem;color:var(--text-dim);transition:color .3s,transform .3s;font-weight:500}
+.mobile-menu a:hover{color:var(--accent);transform:translateX(6px)}
+body.no-scroll{overflow:hidden}
+
+/* ===== HERO ===== */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:space-between;padding:120px 40px 80px;position:relative;overflow:hidden;gap:40px}
+.hero::before{content:'';position:absolute;inset:0;z-index:0;background:url('https://images.unsplash.com/photo-1490750967868-88aa4f44baee?w=1920&q=80') center/cover no-repeat;animation:heroBgZoom 25s ease-in-out infinite alternate}
+@keyframes heroBgZoom{0%{transform:scale(1)}100%{transform:scale(1.08)}}
+.hero::after{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(120deg,rgba(17,15,8,.93) 0%,rgba(17,15,8,.76) 50%,rgba(17,15,8,.88) 100%)}
+.hero-blob{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:1}
+.hero-blob-1{width:500px;height:500px;background:var(--accent-glow);top:-10%;right:-5%;animation:blobFloat 10s ease-in-out infinite}
+.hero-blob-2{width:380px;height:380px;background:var(--warm-glow);bottom:-5%;left:5%;animation:blobFloat 12s ease-in-out infinite 2s}
+.hero-blob-3{width:260px;height:260px;background:var(--rose-glow);top:50%;left:25%;animation:blobFloat 8s ease-in-out infinite 4s}
+.hero-content{max-width:560px;z-index:2;position:relative}
+.hero-label{display:inline-flex;align-items:center;gap:8px;font-size:.82rem;color:var(--accent);background:var(--accent-subtle);padding:6px 16px;border-radius:50px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-bottom:20px;opacity:0;animation:fadeUp .7s ease .8s forwards}
+.hero-label i{font-size:.7rem;animation:labelDot 2s ease-in-out infinite}
+@keyframes labelDot{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h2{font-size:clamp(2.2rem,5vw,3.4rem);line-height:1.15;margin-bottom:20px;opacity:0;animation:fadeUp .7s ease 1s forwards}
+.hero h2 em{font-style:normal;background:linear-gradient(135deg,var(--accent),var(--warm));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{font-size:1.05rem;color:var(--text-dim);line-height:1.7;margin-bottom:14px;max-width:480px;opacity:0;animation:fadeUp .7s ease 1.2s forwards}
+.hero-weekend{display:inline-flex;align-items:center;gap:8px;font-size:.88rem;color:var(--warm);background:rgba(255,140,66,.1);padding:8px 16px;border-radius:50px;margin-bottom:28px;border:1px solid rgba(255,140,66,.15);opacity:0;animation:fadeUp .7s ease 1.3s forwards}
+.hero-weekend i{font-size:.8rem;animation:iconBounce 3s ease-in-out infinite}
+.hero-buttons{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:fadeUp .7s ease 1.4s forwards}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--warm));color:#1a1200;padding:14px 32px;border-radius:var(--radius-sm);font-weight:600;font-size:.95rem;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:transform .3s,box-shadow .3s;position:relative;overflow:hidden}
+.btn-primary::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);transition:left .6s}
+.btn-primary:hover::before{left:100%}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--accent-glow)}
+.btn-outline{background:transparent;color:var(--text);padding:14px 32px;border-radius:var(--radius-sm);font-weight:500;font-size:.95rem;border:1.5px solid var(--border);cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:border-color .3s,color .3s,background .3s}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-subtle)}
+.hero-image{position:relative;z-index:2;flex-shrink:0;opacity:0;animation:fadeUp .8s ease 1.1s forwards}
+.hero-image-wrapper{position:relative;width:380px;height:460px}
+.hero-image-wrapper img{width:100%;height:100%;object-fit:cover;border-radius:var(--radius-lg);box-shadow:0 20px 60px rgba(255,190,11,.1),0 8px 30px rgba(0,0,0,.35)}
+.hero-image-wrapper::before{content:'';position:absolute;inset:-12px;border:2px solid var(--accent);border-radius:calc(var(--radius-lg) + 4px);transform:rotate(3deg);opacity:.4;pointer-events:none;animation:framePulse 5s ease-in-out infinite}
+@keyframes framePulse{0%,100%{opacity:.4;border-color:var(--accent)}50%{opacity:.2;border-color:var(--warm)}}
+.hero-float-card{position:absolute;background:rgba(31,28,16,.92);backdrop-filter:blur(14px);padding:14px 18px;border-radius:var(--radius-sm);border:1px solid var(--border);display:flex;align-items:center;gap:10px;font-size:.85rem;animation:floatCard 4s ease-in-out infinite}
+.hero-float-card.card-top{top:20px;right:-30px;animation-delay:.5s}
+.hero-float-card.card-bottom{bottom:40px;left:-30px;animation-delay:1.5s}
+.hero-float-card i{color:var(--accent);font-size:1.1rem}
+.hero-float-card span{color:var(--text-dim);font-size:.78rem}
+
+/* ===== SECTIONS ===== */
+section{padding:90px 40px;position:relative}
+.section-header{text-align:center;margin-bottom:56px}
+.section-label{display:inline-block;font-size:.78rem;color:var(--accent);font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
+.section-header h2{font-size:clamp(1.8rem,3.5vw,2.4rem);margin-bottom:14px}
+.section-header p{color:var(--text-dim);max-width:560px;margin:0 auto;line-height:1.7;font-size:.95rem}
+.container{max-width:1100px;margin:0 auto}
+
+/* ===== ABOUT ===== */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.about-image{position:relative}
+.about-image img{width:100%;border-radius:var(--radius-lg);box-shadow:0 16px 50px rgba(255,190,11,.08),0 6px 20px rgba(0,0,0,.3);transition:transform .6s}
+.about-image:hover img{transform:scale(1.02)}
+.about-badge{position:absolute;bottom:-16px;right:-16px;background:var(--surface);border:1px solid var(--border);padding:18px 22px;border-radius:var(--radius-sm);text-align:center;animation:badgeFloat 3s ease-in-out infinite}
+@keyframes badgeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.about-badge strong{display:block;font-size:1.6rem;color:var(--accent);font-family:'Playfair Display',serif}
+.about-badge span{font-size:.78rem;color:var(--text-dim)}
+.about-text h2{margin-bottom:16px}
+.about-text .about-desc{color:var(--text-dim);line-height:1.8;margin-bottom:24px;font-size:.95rem}
+.approach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.approach-item{background:var(--surface);border:1px solid var(--border);padding:14px 12px;border-radius:var(--radius-sm);text-align:center;transition:border-color .3s,transform .3s,box-shadow .3s}
+.approach-item:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 8px 20px rgba(255,190,11,.1)}
+.approach-item i{color:var(--accent);font-size:1.1rem;margin-bottom:6px;display:block;transition:transform .3s}
+.approach-item:hover i{transform:scale(1.2) rotate(5deg)}
+.approach-item strong{font-size:.78rem;display:block;font-family:'DM Sans',sans-serif;font-weight:600}
+.credentials{list-style:none;display:flex;flex-direction:column;gap:8px}
+.credentials li{font-size:.88rem;color:var(--text-dim);display:flex;align-items:center;gap:8px;transition:transform .3s}
+.credentials li:hover{transform:translateX(4px)}
+.credentials li i{color:var(--accent);font-size:.7rem;flex-shrink:0}
+
+/* ===== STATS ===== */
+.stats{padding:50px 40px;background:linear-gradient(rgba(255, 198, 43, 0.459),rgba(24,21,9,.93)),url('https://images.unsplash.com/photo-1468327768560-75b778cbb551?w=1920&q=80') center/cover no-repeat;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1100px;margin:0 auto;text-align:center}
+.stat-item h3{font-size:2.2rem;color:var(--accent);margin-bottom:4px;text-shadow:0 0 20px rgba(255,190,11,.3)}
+.stat-item p{font-size:.85rem;color:var(--text-dim)}
+
+/* ===== SERVICES ===== */
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.service-card{background:var(--surface);border:1px solid var(--border);padding:32px 24px;border-radius:var(--radius);text-align:center;transition:transform .4s cubic-bezier(.34,1.56,.64,1),border-color .4s,box-shadow .4s;position:relative;overflow:hidden}
+.service-card::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:0;height:3px;background:var(--accent);border-radius:0 0 4px 4px;transition:width .4s}
+.service-card:hover{transform:translateY(-8px);border-color:rgba(255,190,11,.3);box-shadow:0 16px 40px rgba(255,190,11,.08),0 4px 16px rgba(0,0,0,.2)}
+.service-card:hover::before{width:80px}
+.service-icon{width:60px;height:60px;border-radius:50%;background:var(--accent-subtle);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;transition:background .3s,transform .4s cubic-bezier(.34,1.56,.64,1)}
+.service-card:hover .service-icon{transform:scale(1.15) rotate(-5deg)}
+.service-icon i{font-size:1.3rem;transition:color .3s}
+.service-card h3{font-size:1.1rem;margin-bottom:10px;font-family:'DM Sans',sans-serif;font-weight:600}
+.service-card p{color:var(--text-dim);font-size:.88rem;line-height:1.6}
+.service-card:nth-child(1) .service-icon{background:rgba(255,190,11,.12)}.service-card:nth-child(1) .service-icon i{color:#FFBE0B}.service-card:nth-child(1):hover .service-icon{background:rgba(255,190,11,.28)}.service-card:nth-child(1)::before{background:#FFBE0B}
+.service-card:nth-child(2) .service-icon{background:rgba(232,93,80,.12)}.service-card:nth-child(2) .service-icon i{color:#E85D50}.service-card:nth-child(2):hover .service-icon{background:rgba(232,93,80,.28)}.service-card:nth-child(2)::before{background:#E85D50}
+.service-card:nth-child(3) .service-icon{background:rgba(255,140,66,.12)}.service-card:nth-child(3) .service-icon i{color:#FF8C42}.service-card:nth-child(3):hover .service-icon{background:rgba(255,140,66,.28)}.service-card:nth-child(3)::before{background:#FF8C42}
+.service-card:nth-child(4) .service-icon{background:rgba(240,98,146,.12)}.service-card:nth-child(4) .service-icon i{color:#F06292}.service-card:nth-child(4):hover .service-icon{background:rgba(240,98,146,.28)}.service-card:nth-child(4)::before{background:#F06292}
+.service-card:nth-child(5) .service-icon{background:rgba(174,234,0,.12)}.service-card:nth-child(5) .service-icon i{color:#AEEA00}.service-card:nth-child(5):hover .service-icon{background:rgba(174,234,0,.28)}.service-card:nth-child(5)::before{background:#AEEA00}
+.service-card:nth-child(6) .service-icon{background:rgba(255,209,102,.12)}.service-card:nth-child(6) .service-icon i{color:#FFD166}.service-card:nth-child(6):hover .service-icon{background:rgba(255,209,102,.28)}.service-card:nth-child(6)::before{background:#FFD166}
+
+/* ===== PROCESS ===== */
+.process-section{background:linear-gradient(rgba(255, 198, 43, 0.459),rgba(24,21,9,.93)),url('https://images.unsplash.com/photo-1455659817273-f96807779a8a?w=1920&q=80') center/cover no-repeat;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.process-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;position:relative}
+.process-grid::before{content:'';position:absolute;top:44px;left:18%;right:18%;height:2px;background:linear-gradient(90deg,var(--border),var(--accent),var(--warm),var(--lime),var(--accent),var(--border));background-size:200% 100%;animation:lineShimmer 4s linear infinite;z-index:0}
+@keyframes lineShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.process-step{text-align:center;position:relative;z-index:1}
+.process-number{width:56px;height:56px;border-radius:50%;background:var(--surface);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--accent);font-weight:700;transition:background .3s,transform .3s,box-shadow .3s}
+.process-step:hover .process-number{background:var(--accent-subtle);transform:scale(1.1);box-shadow:0 0 20px var(--accent-glow)}
+.process-step h3{font-size:1rem;margin-bottom:8px;font-family:'DM Sans',sans-serif;font-weight:600}
+.process-step p{color:var(--text-dim);font-size:.85rem;line-height:1.6;max-width:260px;margin:0 auto}
+
+/* ===== TESTIMONIALS ===== */
+.testimonials-wrapper{position:relative;overflow:hidden;border-radius:var(--radius-lg)}
+.testimonials-track{display:flex;transition:transform .6s cubic-bezier(.25,.8,.25,1)}
+.testimonial-slide{min-width:100%;padding:48px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg)}
+.testimonial-top{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.testimonial-avatar{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid var(--accent);transition:transform .3s}
+.testimonial-slide:hover .testimonial-avatar{transform:scale(1.08)}
+.testimonial-info h4{font-size:1rem;font-family:'DM Sans',sans-serif;font-weight:600;margin-bottom:2px}
+.testimonial-info span{font-size:.82rem;color:var(--text-dim)}
+.testimonial-stars{color:var(--warm);font-size:.8rem;margin-bottom:16px;display:flex;gap:3px}
+.testimonial-stars i{animation:starTwinkle 2s ease-in-out infinite}
+.testimonial-stars i:nth-child(2){animation-delay:.2s}.testimonial-stars i:nth-child(3){animation-delay:.4s}.testimonial-stars i:nth-child(4){animation-delay:.6s}.testimonial-stars i:nth-child(5){animation-delay:.8s}
+@keyframes starTwinkle{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+.testimonial-text{font-size:1.05rem;line-height:1.8;color:var(--text-dim);font-style:italic}
+.testimonial-text::before{content:'\201C';font-size:2.5rem;color:var(--accent);font-family:'Playfair Display',serif;display:block;line-height:1;margin-bottom:4px}
+.testimonial-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:24px}
+.testimonial-btn{width:42px;height:42px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-dim);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s}
+.testimonial-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-subtle);transform:scale(1.1)}
+.testimonial-dots{display:flex;gap:8px}
+.testimonial-dot{width:8px;height:8px;border-radius:50%;background:var(--border);cursor:pointer;transition:all .3s}
+.testimonial-dot.active{background:var(--accent);width:24px;border-radius:4px}
+
+/* ===== PRICING ===== */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
+.pricing-card{background:var(--surface);border:1px solid var(--border);padding:36px 28px;border-radius:var(--radius);display:flex;flex-direction:column;transition:transform .4s cubic-bezier(.34,1.56,.64,1),border-color .4s,box-shadow .4s}
+.pricing-card:hover{transform:translateY(-6px);box-shadow:0 12px 40px rgba(255,190,11,.08)}
+.pricing-card.featured{border-color:var(--accent);position:relative;background:linear-gradient(180deg,rgba(255,190,11,.08),var(--surface))}
+.pricing-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--accent),var(--warm));color:#1a1200;font-size:.75rem;font-weight:700;padding:4px 16px;border-radius:50px;white-space:nowrap;animation:badgePulse 3s ease-in-out infinite}
+@keyframes badgePulse{0%,100%{box-shadow:0 0 0 0 rgba(255,190,11,.3)}50%{box-shadow:0 0 0 8px rgba(255,190,11,0)}}
+.pricing-card h3{font-size:1.1rem;font-family:'DM Sans',sans-serif;font-weight:600;margin-bottom:8px}
+.pricing-card .price{font-size:2.6rem;font-family:'Playfair Display',serif;color:var(--accent);margin-bottom:4px}
+.pricing-card .price span{font-size:.9rem;color:var(--text-dim);font-family:'DM Sans',sans-serif;font-weight:400}
+.pricing-card .price-desc{font-size:.82rem;color:var(--text-dim);margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.pricing-features{list-style:none;flex:1;display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
+.pricing-features li{font-size:.88rem;color:var(--text-dim);display:flex;align-items:center;gap:10px}
+.pricing-features li i{color:var(--accent);font-size:.75rem;flex-shrink:0}
+.pricing-card .btn-primary{width:100%;justify-content:center}
+.pricing-card:not(.featured) .btn-primary{background:transparent;border:1.5px solid var(--accent);color:var(--accent)}
+.pricing-card:not(.featured) .btn-primary:hover{background:var(--accent);color:#1a1200}
+
+/* ===== FAQ ===== */
+.faq-list{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+.faq-item{border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;transition:border-color .3s,background .3s}
+.faq-item.open{border-color:rgba(255,190,11,.3);background:var(--accent-subtle)}
+.faq-question{width:100%;padding:20px 24px;background:var(--surface);border:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:space-between;text-align:left;transition:color .3s}
+.faq-item.open .faq-question{background:transparent}
+.faq-question:hover{color:var(--accent)}
+.faq-question i{color:var(--accent);font-size:.75rem;transition:transform .3s}
+.faq-item.open .faq-question i{transform:rotate(180deg)}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.faq-answer-inner{padding:0 24px 20px;color:var(--text-dim);font-size:.9rem;line-height:1.7}
+
+/* ===== FORM ===== */
+.form-section{border-top:1px solid var(--border);background:linear-gradient(rgba(255, 198, 43, 0.459),rgba(24,21,9,.93)),url('https://images.unsplash.com/photo-1508610048659-a06b669e3321?w=1920&q=80') center/cover no-repeat}
+.form-layout{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start}
+.form-info h2{margin-bottom:14px}
+.form-info>p{color:var(--text-dim);line-height:1.7;margin-bottom:28px;font-size:.95rem}
+.form-perk{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px;transition:transform .3s}
+.form-perk:hover{transform:translateX(4px)}
+.form-perk-icon{width:40px;height:40px;border-radius:10px;background:var(--accent-subtle);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.form-perk-icon i{color:var(--accent);font-size:.9rem}
+.form-perk h4{font-size:.9rem;font-family:'DM Sans',sans-serif;font-weight:600;margin-bottom:2px}
+.form-perk p{font-size:.82rem;color:var(--text-dim)}
+.form-card{background:var(--surface);border:1px solid var(--border);padding:32px;border-radius:var(--radius)}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:.82rem;font-weight:600;color:var(--text-dim);margin-bottom:6px}
+.form-input{width:100%;padding:12px 16px;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'DM Sans',sans-serif;font-size:.9rem;transition:border-color .3s,box-shadow .3s}
+.form-input::placeholder{color:var(--text-muted)}
+.form-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-subtle)}
+.form-group.error .form-input{border-color:var(--danger)}
+.form-error{font-size:.78rem;color:var(--danger);margin-top:4px;display:none}
+.form-group.error .form-error{display:block}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+select.form-input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a7e5e' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+textarea.form-input{resize:vertical;min-height:90px}
+.time-slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.time-slot{padding:10px 8px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text-dim);font-family:'DM Sans',sans-serif;font-size:.85rem;cursor:pointer;text-align:center;transition:all .3s}
+.time-slot:hover{border-color:var(--accent);color:var(--text);background:var(--accent-subtle);transform:scale(1.04)}
+.time-slot.selected{background:linear-gradient(135deg,var(--accent),var(--warm));color:#1a1200;border-color:transparent;font-weight:600;box-shadow:0 4px 16px var(--accent-glow);transform:scale(1.04)}
+.form-submit{width:100%;margin-top:6px}
+
+/* ===== FOOTER ===== */
+footer{background:var(--bg-alt);border-top:1px solid var(--border);padding:60px 40px 30px}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;max-width:1100px;margin:0 auto 40px}
+.footer-brand p{color:var(--text-dim);font-size:.88rem;line-height:1.7;margin-top:12px;max-width:280px}
+.footer-socials{display:flex;gap:12px;margin-top:16px}
+.footer-socials a{width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:.85rem;transition:all .3s}
+.footer-socials a:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-3px) scale(1.1);background:var(--accent-subtle)}
+.footer-col h4{font-size:.88rem;font-family:'DM Sans',sans-serif;font-weight:600;margin-bottom:16px;color:var(--text)}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-col li a{font-size:.85rem;color:var(--text-dim);transition:color .3s,transform .3s;display:inline-block}
+.footer-col li a:hover{color:var(--accent);transform:translateX(4px)}
+.footer-contact li{display:flex;align-items:center;gap:10px;font-size:.85rem;color:var(--text-dim)}
+.footer-contact li i{color:var(--accent);font-size:.8rem;width:16px;text-align:center}
+.footer-bottom{text-align:center;padding-top:24px;border-top:1px solid var(--border);font-size:.82rem;color:var(--text-muted)}
+
+/* ===== FLOATING ===== */
+.whatsapp-float{position:fixed;bottom:24px;right:24px;z-index:900;width:56px;height:56px;border-radius:50%;background:#25d366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 4px 20px rgba(37,211,102,.4);transition:transform .3s;animation:whatsappPulse 2s ease-in-out infinite}
+.whatsapp-float:hover{transform:scale(1.15)}
+.scroll-top{position:fixed;bottom:24px;right:92px;z-index:900;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-dim);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.9rem;opacity:0;visibility:hidden;transition:all .3s}
+.scroll-top.visible{opacity:1;visibility:visible}
+.scroll-top:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-3px);background:var(--accent-subtle)}
+
+/* ===== MODAL ===== */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .4s}
+.modal-overlay.open{opacity:1;visibility:visible}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:48px 40px;max-width:440px;width:90%;text-align:center;transform:translateY(20px) scale(.96);transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+.modal-overlay.open .modal{transform:translateY(0) scale(1)}
+.modal-check{width:72px;height:72px;border-radius:50%;background:var(--accent-subtle);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:checkBounce .6s ease .3s both}
+@keyframes checkBounce{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+.modal-check i{font-size:1.8rem;color:var(--accent)}
+.modal h3{font-size:1.3rem;margin-bottom:10px}
+.modal p{color:var(--text-dim);font-size:.9rem;line-height:1.6;margin-bottom:8px}
+.modal-details{background:var(--bg);border-radius:var(--radius-sm);padding:16px;margin:20px 0;text-align:left;display:flex;flex-direction:column;gap:8px}
+.modal-details span{font-size:.85rem;color:var(--text-dim);display:flex;align-items:center;gap:8px}
+.modal-details span strong{color:var(--text);font-weight:500}
+.modal-details span i{color:var(--accent);font-size:.75rem;width:14px}
+.modal-close{background:linear-gradient(135deg,var(--accent),var(--warm));color:#1a1200;border:none;padding:12px 32px;border-radius:var(--radius-sm);font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.9rem;transition:transform .3s,box-shadow .3s}
+.modal-close:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--accent-glow)}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;top:24px;right:24px;z-index:3000;background:var(--surface);border:1px solid var(--danger);border-radius:var(--radius-sm);padding:14px 20px;display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--text);transform:translateX(120%);transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+.toast.show{transform:translateX(0)}
+.toast i{color:var(--danger)}
+
+/* ===== REVEAL ===== */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.reveal.revealed{opacity:1;transform:translateY(0)}
+.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}.reveal-d4{transition-delay:.4s}.reveal-d5{transition-delay:.5s}
+
+/* ===== KEYFRAMES ===== */
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+@keyframes loadBar{to{width:100%}}
+@keyframes blobFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(20px,-20px) scale(1.05)}66%{transform:translate(-15px,15px) scale(.95)}}
+@keyframes floatCard{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes whatsappPulse{0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.4)}50%{box-shadow:0 4px 30px rgba(37,211,102,.6)}}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px){.hero-image-wrapper{width:300px;height:370px}.about-grid{gap:40px}.services-grid{grid-template-columns:repeat(2,1fr)}.pricing-grid{grid-template-columns:repeat(2,1fr)}.pricing-grid .pricing-card:last-child{grid-column:span 2;max-width:400px;justify-self:center}.footer-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){section{padding:60px 20px}nav{padding:14px 20px}nav.scrolled{padding:12px 20px}.nav-links,.nav-cta{display:none}.hamburger{display:flex}.hero{flex-direction:column;text-align:center;padding:110px 20px 60px}.hero-content{max-width:100%}.hero-desc{margin:0 auto 14px}.hero-buttons{justify-content:center}.hero-image-wrapper{width:260px;height:320px;margin-top:10px}.hero-float-card.card-top{right:-10px;top:10px}.hero-float-card.card-bottom{left:-10px;bottom:20px}.about-grid{grid-template-columns:1fr;gap:30px}.about-image{max-width:360px;margin:0 auto}.approach-grid{grid-template-columns:repeat(3,1fr);gap:8px}.stats-grid{grid-template-columns:repeat(2,1fr);gap:16px}.services-grid{grid-template-columns:1fr}.process-grid{grid-template-columns:1fr;gap:24px}.process-grid::before{display:none}.pricing-grid{grid-template-columns:1fr}.pricing-grid .pricing-card:last-child{grid-column:span 1;max-width:100%}.form-layout{grid-template-columns:1fr;gap:30px}.form-row{grid-template-columns:1fr}.time-slots{grid-template-columns:repeat(3,1fr)}.footer-grid{grid-template-columns:1fr;gap:30px}.modal{padding:36px 24px}}
+@media(max-width:480px){.hero h2{font-size:1.8rem}.time-slots{grid-template-columns:repeat(2,1fr)}.hero-float-card{display:none}.approach-grid{grid-template-columns:1fr}.petals-container{display:none}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.15s!important}.reveal{opacity:1;transform:none}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+
+<div class="petals-container">
+  <div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div>
+  <div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div>
+</div>
+
+<div id="preloader">
+  <div class="preloader-icon"><i class="fa-solid fa-seedling"></i></div>
+  <div class="preloader-text">Pétalos de vida</div>
+  <div class="preloader-bar"><span></span></div>
+</div>
+
+<nav>
+  <a href="#" class="nav-logo"><i class="fa-solid fa-seedling"></i> Pétalos de vida</a>
+  <div class="nav-links">
+    <a href="#inicio">Inicio</a>
+    <a href="#sobre-mi">Sobre Mí</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#testimonios">Testimonios</a>
+    <a href="#precios">Precios</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <button class="nav-cta" onclick="scrollTo('#citas')">Agendar Cita</button>
+  <button class="hamburger" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-menu">
+  <a href="#inicio" onclick="closeMobile()">Inicio</a>
+  <a href="#sobre-mi" onclick="closeMobile()">Sobre Mí</a>
+  <a href="#servicios" onclick="closeMobile()">Servicios</a>
+  <a href="#testimonios" onclick="closeMobile()">Testimonios</a>
+  <a href="#precios" onclick="closeMobile()">Precios</a>
+  <a href="#faq" onclick="closeMobile()">Preguntas Frecuentes</a>
+  <a href="#citas" onclick="closeMobile()" style="color:var(--accent)">Agendar Cita</a>
+</div>
+
+<section class="hero" id="inicio">
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-blob hero-blob-3"></div>
+  <div class="hero-content">
+    <div class="hero-label"><i class="fa-solid fa-circle"></i> Psicóloga Clínica</div>
+    <h2>Un espacio seguro para tu <em>bienestar emocional</em></h2>
+    <p class="hero-desc">Te acompaño en tu proceso de crecimiento personal con empatía, profesionalismo y herramientas basadas en evidencia. Porque mereces sentirte bien.</p>
+    <div class="hero-weekend"><i class="fa-solid fa-calendar-days"></i> Citas disponibles todos los sábados y domingos</div>
+    <div class="hero-buttons">
+      <button class="btn-primary" onclick="scrollTo('#citas')"><i class="fa-solid fa-calendar-check"></i> Agendar Cita</button>
+      <button class="btn-outline" onclick="scrollTo('#sobre-mi')"><i class="fa-solid fa-arrow-down"></i> Conoce Más</button>
+    </div>
+  </div>
+  <div class="hero-image">
+    <div class="hero-image-wrapper">
+      <img src="https://ik.imagekit.io/rx3s8imfb/GIF%20E%20IMAGENES/psicologa.png" alt="Psicóloga Miriam Sofia Cabello">
+      <div class="hero-float-card card-top">
+        <i class="fa-solid fa-shield-heart"></i>
+        <div><strong>Confidencial</strong><br><span>100% privado</span></div>
+      </div>
+      <div class="hero-float-card card-bottom">
+        <i class="fa-solid fa-star"></i>
+        <div><strong>+500 pacientes</strong><br><span>confían en mí</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sobre-mi">
+  <div class="container about-grid">
+    <div class="about-image reveal">
+      <img src="https://ik.imagekit.io/rx3s8imfb/GIF%20E%20IMAGENES/FloresAmarillas.png" alt="Consultorio profesional">
+      <div class="about-badge"><strong>10+</strong><span>Años de experiencia</span></div>
+    </div>
+    <div class="about-text">
+      <div class="reveal"><span class="section-label">Sobre Mí</span><h2>Psicologa Miriam Sofia Cabello C.</h2></div>
+      <p class="about-desc reveal reveal-d1">Psicóloga en el área clínica y educativa con varios años al servicio, acompañando a diferentes pacientes en su proceso de bienestar emocional, con terapias de tipo conductual, adaptando cada sesión a las necesidades únicas de los distintos pacientes.</p>
+      <div class="approach-grid reveal reveal-d2">
+        <div class="approach-item"><i class="fa-solid fa-brain"></i><strong>TCC</strong></div>
+        <div class="approach-item"><i class="fa-solid fa-spa"></i><strong>Mindfulness</strong></div>
+        <div class="approach-item"><i class="fa-solid fa-heart-pulse"></i><strong>Humanista</strong></div>
+      </div>
+      <ul class="credentials reveal reveal-d3">
+        <li><i class="fa-solid fa-check"></i> PSICOLOGIA CLINICA Y EDUCATIVA — UNIVERSIDAD METROPOLITANA COLOMBIA</li>
+        <li><i class="fa-solid fa-check"></i> ESPECIALIZACION EN GESTION EDUCATIVA — UNIVERSIDAD DE PAMPLONA COLOMBIA</li>
+        <li><i class="fa-solid fa-check"></i> ESPECIALIZACION EN IDONEIDAD PARA EL ESEMPEÑO PEDAGOGICO — UNIVERSIDAD DEL ATLANTICO COLOMBIA</li>
+        <li><i class="fa-solid fa-check"></i> MIEMBRO DE LA ESCUELA DE PSICOLOGOS EN COLOMBIA CON TARJETA PROFECIONAL</li>
+        <li><i class="fa-solid fa-check"></i> VINCULADA LABORALMENTE AL SECTOR PUBLICO EN EL AREA DE LA DOCENCIA Y ATENCION EN ASESORIAS A PACIENTES</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="stats-grid">
+    <div class="stat-item reveal"><h3 data-count="500">0</h3><p>Pacientes atendidos</p></div>
+    <div class="stat-item reveal reveal-d1"><h3 data-count="10">0</h3><p>Años de experiencia</p></div>
+    <div class="stat-item reveal reveal-d2"><h3 data-count="3000">0</h3><p>Sesiones realizadas</p></div>
+    <div class="stat-item reveal reveal-d3"><h3 data-count="100">0</h3><p>% de satisfacción</p></div>
+  </div>
+</section>
+
+<section id="servicios">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">Servicios</span>
+      <h2>¿En qué puedo ayudarte?</h2>
+      <p>Cada persona es única. Ofrezco un enfoque personalizado para acompañarte en tu camino hacia el bienestar, con sesiones los sábados y domingos.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal"><div class="service-icon"><i class="fa-solid fa-brain"></i></div><h3>Ansiedad y Estrés</h3><p>Aprende a identificar y gestionar los pensamientos y sensaciones que te generan malestar, recuperando tu calma.</p></div>
+      <div class="service-card reveal reveal-d1"><div class="service-icon"><i class="fa-solid fa-cloud-rain"></i></div><h3>Depresión</h3><p>Comprende las raíces de tu estado emocional y trabaja activamente para recuperar tu motivación y bienestar.</p></div>
+      <div class="service-card reveal reveal-d2"><div class="service-icon"><i class="fa-solid fa-heart"></i></div><h3>Terapia de Pareja</h3><p>Fortalece la comunicación, resuelve conflictos y reconstruye la conexión emocional con tu pareja.</p></div>
+      <div class="service-card reveal reveal-d3"><div class="service-icon"><i class="fa-solid fa-gem"></i></div><h3>Autoestima</h3><p>Desarrolla una relación sana contigo mismo, reconoce tu valor y toma decisiones con confianza.</p></div>
+      <div class="service-card reveal reveal-d4"><div class="service-icon"><i class="fa-solid fa-seedling"></i></div><h3>Duelo y Pérdida</h3><p>Acompañamiento sensible para procesar la pérdida de seres queridos, relaciones o etapas de vida.</p></div>
+      <div class="service-card reveal reveal-d5"><div class="service-icon"><i class="fa-solid fa-chart-line"></i></div><h3>Desarrollo Personal</h3><p>Alcanza tus metas, mejora tu productividad y construye hábitos que te acerquen a tu mejor versión.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="process-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">Proceso</span>
+      <h2>¿Cómo funciona?</h2>
+      <p>Tres pasos simples para comenzar tu proceso de cambio. Las sesiones se realizan exclusivamente sábados y domingos.</p>
+    </div>
+    <div class="process-grid">
+      <div class="process-step reveal"><div class="process-number">1</div><h3>Agenda tu cita</h3><p>Elige el sábado o domingo que mejor te convenga, dentro de los horarios disponibles para cada fin de semana.</p></div>
+      <div class="process-step reveal reveal-d2"><div class="process-number">2</div><h3>Primera evaluación</h3><p>En la sesión inicial conversamos sobre tu situación, establecemos objetivos claros y te informo el costo de cada sesión.</p></div>
+      <div class="process-step reveal reveal-d4"><div class="process-number">3</div><h3>Sesiones continuas</h3><p>Trabajaremos juntos cada sábado o domingo, revisando tu progreso y ajustando el enfoque según tus avances.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="testimonios">
+  <div class="container" style="max-width:760px">
+    <div class="section-header reveal"><span class="section-label">Testimonios</span><h2>Lo que dicen mis pacientes</h2></div>
+    <div class="testimonials-wrapper reveal reveal-d1">
+      <div class="testimonials-track" id="testimonialsTrack">
+        <div class="testimonial-slide"><div class="testimonial-top"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" alt="María G." class="testimonial-avatar"><div class="testimonial-info"><h4>María G.</h4><span>28 años — Ansiedad</span></div></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div><p class="testimonial-text">Llegué con mucha ansiedad y sin saber cómo manejar mis emociones. Desde la primera sesión sentí que estaba en el lugar correcto. Ahora tengo herramientas reales para enfrentar mis días con mayor tranquilidad.</p></div>
+        <div class="testimonial-slide"><div class="testimonial-top"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop" alt="Carlos y Laura" class="testimonial-avatar"><div class="testimonial-info"><h4>Carlos y Laura</h4><span>35 y 33 años — Terapia de Pareja</span></div></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div><p class="testimonial-text">La terapia de pareja nos ayudó a comunicarnos de una manera que nunca habíamos podido. Aprendimos a escucharnos sin juzgar y nuestra relación tiene una base mucho más sólida ahora.</p></div>
+        <div class="testimonial-slide"><div class="testimonial-top"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop" alt="Roberto M." class="testimonial-avatar"><div class="testimonial-info"><h4>Roberto M.</h4><span>42 años — Duelo</span></div></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div><p class="testimonial-text">Después de una pérdida muy dolorosa, no sabía cómo seguir. El acompañamiento fue fundamental para procesar mi duelo y volver a encontrar sentido en mi día a día. Eternamente agradecido.</p></div>
+        <div class="testimonial-slide"><div class="testimonial-top"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop" alt="Daniela P." class="testimonial-avatar"><div class="testimonial-info"><h4>Daniela P.</h4><span>25 años — Autoestima</span></div></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div><p class="testimonial-text">Trabajé mi autoestima durante meses y el cambio ha sido increíble. Me siento más segura, tomo mejores decisiones y me relaciono de forma distinta con el mundo. La mejor inversión que hice.</p></div>
+      </div>
+    </div>
+    <div class="testimonial-nav reveal reveal-d2">
+      <button class="testimonial-btn" onclick="changeTestimonial(-1)" aria-label="Anterior"><i class="fa-solid fa-chevron-left"></i></button>
+      <div class="testimonial-dots" id="testimonialDots"></div>
+      <button class="testimonial-btn" onclick="changeTestimonial(1)" aria-label="Siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+  </div>
+</section>
+
+<section id="precios">
+  <div class="container">
+    <div class="section-header reveal"><span class="section-label">Precios</span><h2>Planes adaptados a ti</h2><p>Inversión en tu bienestar con opciones flexibles. Todas las sesiones se agendan para sábados o domingos.</p></div>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal"><h3>Sesión Individual</h3><div class="price">$42 USD<span>/ sesión</span></div><p class="price-desc">Ideal para una primera aproximación o consultas puntuales de 50 minutos.</p><ul class="pricing-features"><li><i class="fa-solid fa-check"></i> Sesión de 50 minutos</li><li><i class="fa-solid fa-check"></i> Sábado o domingo</li><li><i class="fa-solid fa-check"></i> Confidencialidad total</li><li><i class="fa-solid fa-check"></i> Material de apoyo</li></ul><button class="btn-primary" onclick="scrollTo('#citas')">Elegir Plan</button></div>
+      <div class="pricing-card featured reveal reveal-d1"><div class="pricing-badge">Más Popular</div><h3>Paquete Mensual</h3><div class="price">$168 USD<span>/ 4 sesiones</span></div><p class="price-desc">Acompañamiento continuo con un ahorro del 15%. El más elegido por mis pacientes.</p><ul class="pricing-features"><li><i class="fa-solid fa-check"></i> 4 sesiones de 50 minutos</li><li><i class="fa-solid fa-check"></i> Sábados y domingos</li><li><i class="fa-solid fa-check"></i> Confidencialidad total</li><li><i class="fa-solid fa-check"></i> Material de apoyo</li><li><i class="fa-solid fa-check"></i> Seguimiento por mensaje</li><li><i class="fa-solid fa-check"></i> Horarios establecidos</li></ul><button class="btn-primary" onclick="scrollTo('#citas')">Elegir Plan</button></div>
+      <div class="pricing-card reveal reveal-d2"><h3>Plan Transformación</h3><div class="price">$336 USD<span>/ 8 sesiones</span></div><p class="price-desc">Para un trabajo profundo y sostenido. Máximo ahorro con seguimiento integral.</p><ul class="pricing-features"><li><i class="fa-solid fa-check"></i> 8 sesiones de 50 minutos</li><li><i class="fa-solid fa-check"></i> Sábados y domingos</li><li><i class="fa-solid fa-check"></i> Confidencialidad total</li><li><i class="fa-solid fa-check"></i> Material de apoyo</li><li><i class="fa-solid fa-check"></i> Seguimiento por mensaje</li><li><i class="fa-solid fa-check"></i> Sesión extra de evaluación</li></ul><button class="btn-primary" onclick="scrollTo('#citas')">Elegir Plan</button></div>
+    </div>
+    <p style="font-size:.78rem;color:var(--text-muted);margin-top:6px;max-width:500px;margin-left:auto;margin-right:auto;text-align:center;padding:8px 14px;background:rgba(255,190,11,.06);border-radius:8px;border:1px solid var(--border);"><i class="fa-solid fa-circle-info" style="font-size:.7rem;color:var(--accent);margin-right:4px;"></i>Horarios corresponden a hora Colombia (UTC-5). Pagos vía WhatsApp, Nequi o transferencia bancaria.</p>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="container">
+    <div class="section-header reveal"><span class="section-label">Preguntas Frecuentes</span><h2>Resolvé tus dudas</h2></div>
+    <div class="faq-list">
+      <div class="faq-item reveal"><button class="faq-question">¿Cuánto dura cada sesión y qué días están disponibles?<i class="fa-solid fa-chevron-down"></i></button><div class="faq-answer"><div class="faq-answer-inner">Cada sesión tiene una duración de 50 minutos. Las citas se realizan exclusivamente los sábados y domingos, dentro de los horarios establecidos.</div></div></div>
+      <div class="faq-item reveal reveal-d1"><button class="faq-question">¿Todo lo que hablo es confidencial?<i class="fa-solid fa-chevron-down"></i></button><div class="faq-answer"><div class="faq-answer-inner">Absolutamente sí. El secreto profesional es un pilar fundamental de mi práctica. Todo lo que compartas en sesión sera guardado de manera ética y profesional, salvo los casos que la ley exige reportar.</div></div></div>
+      <div class="faq-item reveal reveal-d2"><button class="faq-question">¿Cómo funcionan las sesiones en línea los fines de semana?<i class="fa-solid fa-chevron-down"></i></button><div class="faq-answer"><div class="faq-answer-inner">Las sesiones en línea se realizan por videollamada los sábados y domingos con la misma calidad y calidez que una sesión presencial. Solo necesitas un dispositivo con cámara, conexión a internet estable y un espacio privado.</div></div></div>
+      <div class="faq-item reveal reveal-d3"><button class="faq-question">¿Necesito alguna derivación médica para empezar?<i class="fa-solid fa-chevron-down"></i></button><div class="faq-answer"><div class="faq-answer-inner">No es necesario. Puedes agendar tu cita directamente para el próximo sábado o domingo disponible. Sin embargo, si estás tomando medicación psiquiátrica, es importante que lo menciones.</div></div></div>
+      <div class="faq-item reveal reveal-d4"><button class="faq-question">¿Cuál es la política de cancelación?<i class="fa-solid fa-chevron-down"></i></button><div class="faq-answer"><div class="faq-answer-inner">Puedes cancelar o reprogramar tu cita del sábado o domingo con al menos 24 horas de anticipación sin ningún costo. Cancelaciones con menor aviso pueden estar sujetas al cobro de la sesión.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="citas" class="form-section">
+  <div class="container form-layout">
+    <div class="form-info reveal">
+      <span class="section-label">Agendar Cita</span>
+      <h2>Da el primer paso hacia tu bienestar</h2>
+      <p style="color: rgba(255, 255, 255, 0.829)">Completa el formulario seleccionando el sábado o domingo que prefieras, y me pondré en contacto contigo para confirmar tu cita en menos de 24 horas.</p>
+      <div class="form-perk"><div class="form-perk-icon"><i class="fa-solid fa-clock"></i></div><div><h4>Respuesta rápida</h4><p style="color: rgba(255, 255, 255, 0.829)">Confirmación en menos de 24 horas</p></div></div>
+      <div class="form-perk"><div class="form-perk-icon"><i class="fa-solid fa-calendar-week"></i></div><div><h4>Sábados y domingos</h4><p style="color: rgba(255, 255, 255, 0.829)">Elige el fin de semana que mejor te venga</p></div></div>
+      <div class="form-perk"><div class="form-perk-icon"><i class="fa-solid fa-lock"></i></div><div><h4>Privacidad garantizada</h4><p style="color: rgba(255, 255, 255, 0.829)">Tus datos están protegidos</p></div></div>
+    </div>
+    <div class="form-card reveal reveal-d2">
+      <form id="citaForm" onsubmit="agendarCita(event)" novalidate>
+        <div class="form-row">
+          <div class="form-group"><label for="nombre">Nombre completo</label><input type="text" id="nombre" class="form-input" placeholder="Ej: Luis Diaz" required><span class="form-error">Por favor ingresa tu nombre</span></div>
+          <div class="form-group"><label for="telefono">Teléfono</label><input type="tel" id="telefono" class="form-input" placeholder="Ej: +57 3005580778" required><span class="form-error">Por favor ingresa tu teléfono</span></div>
+        </div>
+        <div class="form-group"><label for="email">Correo electrónico</label><input type="email" id="email" class="form-input" placeholder="Ej: tu@correo.com" required><span class="form-error">Por favor ingresa un correo válido</span></div>
+        <div class="form-group"><label for="servicio">Servicio</label><select id="servicio" class="form-input" required><option value="">Selecciona un servicio</option><option value="ansiedad">Ansiedad y Estrés</option><option value="depresion">Depresión</option><option value="pareja">Terapia de Pareja</option><option value="autoestima">Autoestima</option><option value="duelo">Duelo y Pérdida</option><option value="desarrollo">Desarrollo Personal</option></select><span class="form-error">Por favor selecciona un servicio</span></div>
+        <div class="form-row">
+          <div class="form-group"><label for="fecha">Selecciona el sábado o domingo deseado</label><input type="date" id="fecha" class="form-input" required><span class="form-error" id="fechaError">Por favor selecciona un fin de semana</span></div>
+          <div class="form-group"><label>Horario preferido</label><div class="time-slots" id="timeSlots"><button type="button" class="time-slot" data-time="09:00">9:00</button><button type="button" class="time-slot" data-time="10:00">10:00</button><button type="button" class="time-slot" data-time="11:00">11:00</button><button type="button" class="time-slot" data-time="12:00">12:00</button><button type="button" class="time-slot" data-time="14:00">02:00</button><button type="button" class="time-slot" data-time="15:00">03:00</button><button type="button" class="time-slot" data-time="16:00">04:00</button><button type="button" class="time-slot" data-time="17:00">05:00</button></div><span class="form-error" id="timeError">Por favor selecciona un horario</span></div>
+        </div>
+        <div class="form-group"><label for="mensaje">¿Qué te gustaría trabajar? (opcional)</label><textarea id="mensaje" class="form-input" placeholder="Cuéntame brevemente qué te motiva a buscar terapia..."></textarea></div>
+        <button type="submit" class="btn-primary form-submit"><i class="fa-solid fa-paper-plane"></i> Agendar Cita</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo" style="margin-bottom:4px"><i class="fa-solid fa-seedling"></i> Pétalos de vida</a>
+      <p>Espacio terapéutico dedicado a acompañarte en tu camino hacia el bienestar emocional con profesionalismo y calidez humana. Citas disponibles cada sábado y domingo.</p>
+      <div class="footer-socials">
+        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+    </div>
+    <div class="footer-col"><h4>Navegación</h4><ul><li><a href="#inicio">Inicio</a></li><li><a href="#sobre-mi">Sobre Mí</a></li><li><a href="#servicios">Servicios</a></li><li><a href="#testimonios">Testimonios</a></li><li><a href="#precios">Precios</a></li></ul></div>
+    <div class="footer-col"><h4>Servicios</h4><ul><li><a href="#servicios">Ansiedad y Estrés</a></li><li><a href="#servicios">Depresión</a></li><li><a href="#servicios">Terapia de Pareja</a></li><li><a href="#servicios">Autoestima</a></li><li><a href="#servicios">Desarrollo Personal</a></li></ul></div>
+    <div class="footer-col"><h4>Contacto</h4><ul class="footer-contact"><li><i class="fa-solid fa-phone"></i> +57 3005580778</li><li><i class="fa-solid fa-envelope"></i> soficabelloconsuegra@hotmail.com</li><li><i class="fa-solid fa-location-dot"></i> Barranquilla, Colombia</li><li><i class="fa-solid fa-calendar-days"></i> Sábados y Domingos: 9:00 - 18:00</li></ul></div>
+  </div>
+  <div class="footer-bottom"><p>Pétalos de vida &copy; 2025. Todos los derechos reservados. Este sitio no reemplaza la atención médica profesional.</p></div>
+</footer>
+
+<a href="https://wa.me/573005580778?text=Hola%2C%20me%20gustar%C3%ADa%20agendar%20una%20cita" target="_blank" class="whatsapp-float" aria-label="Contactar por WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Volver arriba"><i class="fa-solid fa-chevron-up"></i></button>
+
+<div class="modal-overlay" id="successModal">
+  <div class="modal">
+    <div class="modal-check"><i class="fa-solid fa-check"></i></div>
+    <h3>Cita agendada exitosamente</h3>
+    <p>Te confirmaremos los detalles en menos de 24 horas.</p>
+    <div class="modal-details" id="modalDetails"></div>
+    <button class="modal-close" onclick="closeModal()">Entendido</button>
+  </div>
+</div>
+
+<div class="toast" id="toastError"><i class="fa-solid fa-circle-exclamation"></i><span id="toastMsg"></span></div>
+
+<script>
+window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('preloader').classList.add('hidden')},2000)});
+const nav=document.querySelector('nav'),scrollTopBtn=document.getElementById('scrollTopBtn');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>50);scrollTopBtn.classList.toggle('visible',window.scrollY>500)});
+function scrollTo(s){const e=document.querySelector(s);if(e)e.scrollIntoView({behavior:'smooth',block:'start'})}
+const hamburger=document.querySelector('.hamburger'),mobileMenu=document.querySelector('.mobile-menu');
+hamburger.addEventListener('click',()=>{hamburger.classList.toggle('active');mobileMenu.classList.toggle('open');document.body.classList.toggle('no-scroll')});
+function closeMobile(){hamburger.classList.remove('active');mobileMenu.classList.remove('open');document.body.classList.remove('no-scroll')}
+const revealObserver=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('revealed')})},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(e=>revealObserver.observe(e));
+let countersDone=false;
+const statsObserver=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting&&!countersDone){countersDone=true;document.querySelectorAll('[data-count]').forEach(el=>{animateCounter(el,parseInt(el.getAttribute('data-count')))})}})},{threshold:.3});
+document.querySelectorAll('.stats').forEach(e=>statsObserver.observe(e));
+function animateCounter(el,target){const dur=2000,start=performance.now();function up(now){const p=Math.min((now-start)/dur,1),eased=1-Math.pow(1-p,4);el.textContent=Math.round(eased*target).toLocaleString()+'+';if(p<1)requestAnimationFrame(up)}requestAnimationFrame(up)}
+let currentSlide=0;const track=document.getElementById('testimonialsTrack'),slides=track.querySelectorAll('.testimonial-slide'),totalSlides=slides.length,dotsContainer=document.getElementById('testimonialDots');
+for(let i=0;i<totalSlides;i++){const d=document.createElement('div');d.className='testimonial-dot'+(i===0?' active':'');d.addEventListener('click',()=>goToSlide(i));dotsContainer.appendChild(d)}
+function goToSlide(i){currentSlide=i;track.style.transform=`translateX(-${i*100}%)`;dotsContainer.querySelectorAll('.testimonial-dot').forEach((d,j)=>d.classList.toggle('active',j===i))}
+function changeTestimonial(dir){let n=currentSlide+dir;if(n<0)n=totalSlides-1;if(n>=totalSlides)n=0;goToSlide(n);resetAutoplay()}
+let autoplayInterval=setInterval(()=>changeTestimonial(1),5000);
+function resetAutoplay(){clearInterval(autoplayInterval);autoplayInterval=setInterval(()=>changeTestimonial(1),5000)}
+const tw=document.querySelector('.testimonials-wrapper');tw.addEventListener('mouseenter',()=>clearInterval(autoplayInterval));tw.addEventListener('mouseleave',resetAutoplay);
+document.querySelectorAll('.faq-question').forEach(btn=>{btn.addEventListener('click',()=>{const item=btn.parentElement,ans=btn.nextElementSibling,open=item.classList.contains('open');document.querySelectorAll('.faq-item').forEach(f=>{f.classList.remove('open');f.querySelector('.faq-answer').style.maxHeight='0'});if(!open){item.classList.add('open');ans.style.maxHeight=ans.scrollHeight+'px'}})});
+let selectedTime=null;
+document.querySelectorAll('.time-slot').forEach(s=>{s.addEventListener('click',()=>{document.querySelectorAll('.time-slot').forEach(x=>x.classList.remove('selected'));s.classList.add('selected');selectedTime=s.getAttribute('data-time');document.getElementById('timeError').style.display='none'})});
+const fechaInput=document.getElementById('fecha');fechaInput.setAttribute('min',new Date().toISOString().split('T')[0]);
+fechaInput.addEventListener('input',function(){const d=new Date(this.value+'T12:00:00');if(d.getDay()!==0&&d.getDay()!==6){this.value='';const g=this.closest('.form-group');g.classList.add('error');const err=g.querySelector('.form-error');err.textContent='Solo se atienden sábados y domingos';err.style.display='block'}else{this.closest('.form-group').classList.remove('error');this.closest('.form-group').querySelector('.form-error').style.display='none'}});
+function agendarCita(e){
+  e.preventDefault();
+  const nombre=document.getElementById('nombre'),
+        telefono=document.getElementById('telefono'),
+        email=document.getElementById('email'),
+        servicio=document.getElementById('servicio'),
+        fecha=document.getElementById('fecha'),
+        mensaje=document.getElementById('mensaje');
+  
+  let ok=true;
+  document.querySelectorAll('.form-group').forEach(g=>g.classList.remove('error'));
+  document.getElementById('timeError').style.display='none';
+  
+  if(!nombre.value.trim()){nombre.closest('.form-group').classList.add('error');ok=false}
+  if(!telefono.value.trim()){telefono.closest('.form-group').classList.add('error');ok=false}
+  if(!email.value.trim()||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)){email.closest('.form-group').classList.add('error');ok=false}
+  if(!servicio.value){servicio.closest('.form-group').classList.add('error');ok=false}
+  if(!fecha.value){fecha.closest('.form-group').classList.add('error');ok=false}
+  if(!selectedTime){document.getElementById('timeError').style.display='block';ok=false}
+  
+  if(!ok){
+    const f=document.querySelector('.form-group.error, #timeError');
+    if(f)f.scrollIntoView({behavior:'smooth',block:'center'});
+    showToast('Por favor completa todos los campos requeridos');
+    return;
+  }
+  
+  const servicioTexto=servicio.options[servicio.selectedIndex].text;
+  const fechaFormato=new Date(fecha.value+'T12:00:00').toLocaleDateString('es-ES',{
+    weekday:'long',year:'numeric',month:'long',day:'numeric'
+  });
+  
+  const textoMensaje=
+    'Hola, quiero agendar una cita.\n\n' +
+    'Nombre: ' + nombre.value.trim() + '\n' +
+    'Teléfono: ' + telefono.value.trim() + '\n' +
+    'Correo: ' + email.value.trim() + '\n' +
+    'Servicio: ' + servicioTexto + '\n' +
+    'Fecha: ' + fechaFormato + '\n' +
+    'Hora: ' + selectedTime + ' hrs\n' +
+    (mensaje.value.trim() ? 'Motivo de consulta: ' + mensaje.value.trim() : '');
+  
+  window.open('https://wa.me/573005580778?text=' + encodeURIComponent(textoMensaje), '_blank');
+  
+  document.getElementById('citaForm').reset();
+  document.querySelectorAll('.time-slot').forEach(s=>s.classList.remove('selected'));
+  selectedTime=null;
+}
+function closeModal(){document.getElementById('successModal').classList.remove('open')}
+document.getElementById('successModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+let toastTimeout;function showToast(m){const t=document.getElementById('toastError');document.getElementById('toastMsg').textContent=m;t.classList.add('show');clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>t.classList.remove('show'),3500)}
+document.querySelectorAll('.form-input').forEach(i=>{i.addEventListener('input',()=>{i.closest('.form-group').classList.remove('error')})});
+</script>
+</body>
+</html>
